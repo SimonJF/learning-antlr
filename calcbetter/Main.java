@@ -1,3 +1,4 @@
+import ast.Program;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 import java.io.FileInputStream;
@@ -14,12 +15,13 @@ public class Main {
             is = new FileInputStream(inputFile);
         }
         ANTLRInputStream input = new ANTLRInputStream(is);
-        CalcLexer lexer = new CalcLexer(input);
+        CalcBetterLexer lexer = new CalcBetterLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        CalcParser parser = new CalcParser(tokens);
+        CalcBetterParser parser = new CalcBetterParser(tokens);
 
         ParseTree tree = parser.prog();
         System.out.println(tree.toStringTree(parser));
-        System.out.println("Result: " + new CalcEvalVisitor().visit(tree));
+        Program p = (new GenCalcAST()).genAST(tree);
+        new Eval().evalProgram(p);
     }
 }

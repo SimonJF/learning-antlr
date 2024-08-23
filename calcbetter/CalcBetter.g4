@@ -1,10 +1,9 @@
-grammar Calc;
+grammar CalcBetter;
 
 prog: stat+ ;
 
-stat: expr NEWLINE # printExpr
-    | ID '=' expr NEWLINE # assign
-    | NEWLINE # blank
+stat: 'print' expr SEMICOLON # printExpr
+    | ID '=' expr SEMICOLON # assign
     ;
 
 expr: expr op=('*'|'/') expr # MulDiv
@@ -16,10 +15,11 @@ expr: expr op=('*'|'/') expr # MulDiv
 
 ID : [a-zA-Z]+ ;
 INT : [0-9]+ ;
-NEWLINE: '\r'? '\n' ;
+NEWLINE: '\r'? '\n' -> skip;
 WS : [ \t]+ -> skip ;
-
+SEMICOLON : ';' ;
 MUL: '*' ;
 DIV: '/' ;
 SUB: '-' ;
 ADD: '+' ;
+
